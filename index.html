@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music App</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Link to FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <h2>Music App</h2>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for a song...">
+      </div>
+      <ul id="songList"></ul>
+      <div class="upload-section">
+        <input type="file" id="fileInput" accept="audio/*">
+        <label id="fileLabel" for="fileInput">Choose File</label>
+      </div>
+    </div>
+    <div class="main-content">
+      <h3 id="songTitle">Select a song to play</h3>
+      <audio id="audioPlayer" controls></audio>
+      <div class="controls">
+        <button id="prevBtn" class="control-btn"><i class="fas fa-backward"></i></button>
+        <button id="playPauseBtn" class="control-btn"><i class="fas fa-play"></i></button>
+        <button id="nextBtn" class="control-btn"><i class="fas fa-forward"></i></button>
+        <button id="shuffleBtn" class="control-btn"><i class="fas fa-random"></i></button>
+        <button id="loopBtn" class="control-btn"><i class="fas fa-repeat"></i></button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

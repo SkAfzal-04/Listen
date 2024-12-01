@@ -1,0 +1,36 @@
+# Node.js dependencies
+/node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE/editor configurations (you can adjust based on your IDE)
+.vscode/
+.idea/
+
+# Build and temporary files
+/dist/
+/build/
+/tmp/
+*.bak
+
+# Ignore .env files and other sensitive information
+*.env
+
+# Heroku build folder (if applicable)
+/.heroku/
+
+# Debug files
+*.pid
+*.seed
+*.pid.lock
