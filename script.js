@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('searchInput');
 
   let songs = [];
-  let filteredSongs = []; // Array to store the filtered songs
+  let filteredSongs = [];
   let currentIndex = 0;
   let isShuffling = false;
   let isLooping = false;
@@ -21,9 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const fetchSongs = async () => {
     try {
       const response = await fetch('http://localhost:3000/songs');
-      songs = await response.json();
-      filteredSongs = songs; // Initially, the filtered songs will be the same as the full song list
-      updateSongList();
+      const data = await response.json();
+      if (data && Array.isArray(data.songs)) {
+        songs = data.songs; // Extract songs array from backend response
+        filteredSongs = songs; // Set initial filtered songs
+        updateSongList();
+      } else {
+        console.error('Invalid response format:', data);
+      }
     } catch (err) {
       console.error('Error fetching songs:', err);
     }
@@ -39,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const li = document.createElement('li');
         li.textContent = song;
         li.classList.add('song-item');
-        li.addEventListener('click', () => playSong(index)); // Use the filtered index here
+        li.addEventListener('click', () => playSong(index));
         songList.appendChild(li);
       });
     }
@@ -49,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterSongs = () => {
     const query = searchInput.value.toLowerCase();
     filteredSongs = songs.filter(song => song.toLowerCase().includes(query));
-    updateSongList(); // Update the UI with filtered songs
+    updateSongList();
   };
 
   // Play selected song
@@ -59,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     songTitle.textContent = filteredSongs[currentIndex];
     audioPlayer.play();
     highlightCurrentSong();
-    playPauseBtn.innerHTML = `<i class="fas fa-pause"></i>`; // Change to pause icon
+    playPauseBtn.innerHTML = `<i class="fas fa-pause"></i>`;
   };
 
   // Highlight current song in list
@@ -73,10 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
   playPauseBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
       audioPlayer.play();
-      playPauseBtn.innerHTML = `<i class="fas fa-pause"></i>`; // Change to pause icon
+      playPauseBtn.innerHTML = `<i class="fas fa-pause"></i>`;
     } else {
       audioPlayer.pause();
-      playPauseBtn.innerHTML = `<i class="fas fa-play"></i>`; // Change to play icon
+      playPauseBtn.innerHTML = `<i class="fas fa-play"></i>`;
     }
   });
 
@@ -99,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Shuffle button event
   shuffleBtn.addEventListener('click', () => {
     isShuffling = !isShuffling;
-    shuffleBtn.style.color = isShuffling ? '#39FF14' : '#fff'; // Change color when active
+    shuffleBtn.style.color = isShuffling ? '#39FF14' : '#fff';
   });
 
   // Loop button event
@@ -123,11 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
     formData.append('file', file);
 
     try {
-      await fetch('http://localhost:3000/upload', {
+      const response = await fetch('http://localhost:3000/upload', {
         method: 'POST',
         body: formData,
       });
-      fetchSongs();
+      if (response.ok) {
+        fetchSongs(); // Refresh song list after upload
+      } else {
+        console.error('Error uploading file:', await response.text());
+      }
     } catch (err) {
       console.error('Error uploading file:', err);
     }

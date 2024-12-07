@@ -123,6 +123,7 @@ audio {
   cursor: pointer;
   transition: all 0.3s;
   overflow: auto;
+  scrollbar-width: none;
 }
 
 .sidebar ul li:hover {
